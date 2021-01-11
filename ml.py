@@ -14,14 +14,12 @@ class MaskRCNNConfig(mrcnn.config.Config):
     DETECTION_MIN_CONFIDENCE = 0.6
 
 IMAGE_DIR = 'images'
-def get_car_boxes(boxes, class_ids, class_id):
-    car_boxes = []
-
-    for i, box in enumerate(boxes):
+def select_boxes(all_boxes, class_ids, class_id):
+    boxes = []
+    for i, box in enumerate(all_boxes):
         if class_ids[i] in [class_id]:
-            car_boxes.append(box)
-
-    return np.array(car_boxes)
+            boxes.append(box)
+    return np.array(boxes)
 
 def recognize(video_path, model, class_id, step, working_folder):
     cap = cv2.VideoCapture(video_path)
@@ -39,12 +37,12 @@ def recognize(video_path, model, class_id, step, working_folder):
             rgb_image = image[:, :, ::-1]
             results = model.detect([rgb_image], verbose=0)
             r = results[0]
-            car_boxes = get_car_boxes(r['rois'], r['class_ids'], class_id)
-            count = len(car_boxes)
+            selected_boxes = select_boxes(r['rois'], r['class_ids'], class_id)
+            count = len(selected_boxes)
             flash(str(count))
             plt.figure(figsize=[10, 10])
             plt.imshow(rgb_image)
-            for box in car_boxes:
+            for box in selected_boxes:
                 y1, x1, y2, x2 = box
                 plt.plot([x1, x1, x2, x2, x1], [y1, y2, y2, y1, y1], linewidth=3)
             plt.savefig(os.path.join(working_folder, f'{timestamp}.png'))
