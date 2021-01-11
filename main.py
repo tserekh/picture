@@ -80,12 +80,12 @@ def upload_file():
             flash('File successfully uploaded')
 
             video_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{now}.{extension}')
-            step = 3000
+            step = 1000
             working_folder = os.path.join(app.config['UPLOAD_FOLDER'], f'{now}')
             recognize(video_path, model, class_id, step, working_folder)
             #########################
-
-        return redirect('/')
+        return 'ok'
+        # return redirect(request.url)
 
 
 

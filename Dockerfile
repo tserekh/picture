@@ -1,9 +1,8 @@
-FROM python:3.6
+FROM python:3.7
 
 
 
 RUN apt update
-RUN apt install software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa -y
 RUN apt install python3 -y
 RUN apt install curl -y

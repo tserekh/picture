@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+uploads
+logs
+*.h
+mask-rcnn-coco
+mask_rcnn_coco.h5
+/logs/
