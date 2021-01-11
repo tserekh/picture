@@ -1,2 +1,11 @@
 flask
 waitress
+gunicorn
+werkzeug
+opencv-python
+pytz
+tensorflow==1.13.1
+keras==2.2.4
+scipy
+scikit-image
+mrcnn
