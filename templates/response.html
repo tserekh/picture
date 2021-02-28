@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class=page>
+  <h1>Label groups</h1>
+  {% for table in tables %}
+    <h2></h2>
+    {{ table|safe }}
+  {% endfor %}
+</div>
+{% for name in image_names %}
+ <img src="{{ url_for('static', filename='pferson_folder/' + name) }}" >
+{% endfor %}
+</body>
+</html>
