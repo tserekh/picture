@@ -9,22 +9,22 @@
 		  <li>{{ message }}</li>
 		{% endfor %}
 		</ul>
-	  {% endif %}
-	{% endwith %}
+      {% endif %}
+    {% endwith %}
 </p>
 
 <form method="post" action="/" enctype="multipart/form-data">
     <dl>
-		<p>
-			<input type="file" name="file" autocomplete="off" required>
-		</p>
+        <p>
+            <input type="file" name="file" autocomplete="off" required>
+        </p>
     </dl>
-	<select name="colour" method="GET" action="/">
-    {% for colour in colours %}
-        <option value="{{colour}}" SELECTED>{{colour}}</option>"
-    {% endfor %}
-	</select>
+    <select name="class_name" method="GET" action="/">
+        {% for class_name in class_names %}
+            <option value="{{ class_name }}" SELECTED>{{ class_name }}</option>"
+        {% endfor %}
+    </select>
     <p>
-		<input type="submit" value="Submit">
-	</p>
+        <input type="submit" value="Submit">
+    </p>
 </form>

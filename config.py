@@ -3,7 +3,6 @@ from pathlib import Path
 
 ROOT_DIR = Path(".")
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
-COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
 
 logging_config = {
     'version': 1,
@@ -20,3 +19,10 @@ logging_config = {
         'handlers': ['wsgi']
     }
 }
+
+PATH_TO_LABELS = '/home/tserekh/exp/models/research/object_detection/data/mscoco_label_map.pbtxt'
+MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+
+MAX_CONTENT_LENGTH = 1024 * 1024 * 1024
+UPLOAD_FOLDER = '../uploads'
+RESAVE_FOLDER = '../resaved'

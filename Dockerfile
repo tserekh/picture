@@ -21,5 +21,5 @@ RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 #RUN service nginx restart
 RUN pip3 install -r /app/requirements.txt
-RUN python /app/download_pretrained_model.py
+#RUN python /app/download_pretrained_model.py
 CMD gunicorn --bind 0.0.0.0:$PORT wsgi
