@@ -1,9 +1,9 @@
-import os
 import pathlib
 import sys
 from functools import reduce
 from typing import Dict, Any
 
+import cv2
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -30,7 +30,7 @@ def load_model(model_name: str) -> WrappedFunction:
     return model
 
 
-def make_prediction_result(model: WrappedFunction, image: np.array) -> Dict[Any]:
+def make_prediction_result(model: WrappedFunction, image: np.array) -> Dict[Any, Any]:
     image = np.asarray(image)
     input_tensor = tf.convert_to_tensor(image)
     input_tensor = input_tensor[tf.newaxis, ...]
@@ -47,7 +47,6 @@ def make_prediction_result(model: WrappedFunction, image: np.array) -> Dict[Any]
             image.shape[0], image.shape[1])
         detection_masks_reframed = tf.cast(detection_masks_reframed > 0.5, tf.uint8)
         output_dict['detection_masks_reframed'] = detection_masks_reframed.numpy()
-
     return output_dict
 
 
@@ -57,8 +56,8 @@ def get_class_names_dict(path_to_labels: str) -> Dict[int, str]:
     return class_names_dict
 
 
-def recongnize(app, model, image_np, class_names_dict, category_index, now, extension, resave_folder,
-               class_name) -> pd.DataFrame:
+def recongnize_image(app, model, image_np, class_names_dict, category_index,
+                     class_name, image_path_resave=None) -> pd.DataFrame:
     output_dict = make_prediction_result(model, image_np)
 
     app.logger.warning(str(output_dict))
@@ -69,6 +68,20 @@ def recongnize(app, model, image_np, class_names_dict, category_index, now, exte
     for key in output_dict.keys():
         if key != 'num_detections':
             output_dict[key] = output_dict[key][filter_]
+    if image_path_resave is not None:
+        save_recognized(image_np, image_path_resave, category_index, output_dict)
+    df = pd.DataFrame(
+        [output_dict['detection_scores'], output_dict['detection_classes']],
+        index=['detection_scores', 'detection_classes']
+    ).T
+    df['class_name'] = df['detection_classes'].apply(lambda x: {v: k for k, v in class_names_dict.items()}[x])
+    summary = df.groupby('class_name').agg({'detection_scores': ['sum', 'count']})
+    summary.columns = ['sum', 'count']
+    summary = summary.reset_index()
+    return summary
+
+
+def save_recognized(image_np, image_resave_path, category_index, output_dict):
     vis_util.visualize_boxes_and_labels_on_image_array(
         image_np,
         output_dict['detection_boxes'],
@@ -80,15 +93,25 @@ def recongnize(app, model, image_np, class_names_dict, category_index, now, exte
         line_thickness=3,
         min_score_thresh=0,
     )
-    image_path_resave = os.path.join(resave_folder, f'{now}.{extension}')
-    Image.fromarray(image_np).save(image_path_resave, format='JPEG')
+    #
+    Image.fromarray(image_np).save(image_resave_path, format='JPEG')
 
-    df = pd.DataFrame(
-        [output_dict['detection_scores'], output_dict['detection_classes']],
-        index=['detection_scores', 'detection_classes']
-    ).T
-    df['class_name'] = df['detection_classes'].apply(lambda x: {v: k for k, v in class_names_dict.items()}[x])
-    df_gb = df.groupby('class_name').agg({'detection_scores': ['sum', 'count']})
-    df_gb.columns = ['sum', 'count']
-    df_gb = df_gb.reset_index()
-    return df_gb
+
+def recongnize_video(app, model, video_path, class_names_dict, category_index, class_name,
+                     image_resave_path_pattern) -> pd.DataFrame:
+    cap = cv2.VideoCapture(video_path)
+    brightness = []
+    timestamps = []
+    summary = pd.DataFrame()
+    for i in range(100):
+        ok, image_np = cap.read()
+
+        if ok:
+            brightness.append(image_np.mean())
+            timestamps.append(cap.get(cv2.CAP_PROP_POS_MSEC))
+            summary_part = recongnize_image(app, model, image_np, class_names_dict, category_index,
+                                            class_name, image_path_resave=image_resave_path_pattern.format(i))
+            summary = summary.append(summary_part)
+        if not ok:
+            break
+    return summary
