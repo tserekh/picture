@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  worker: python main.py
+  web: bundle exec python main.py
