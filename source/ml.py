@@ -1,5 +1,4 @@
 import pathlib
-import sys
 from functools import reduce
 from typing import Dict, Any
 
@@ -8,12 +7,10 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from PIL import Image
-from tensorflow.python.eager.wrap_function import WrappedFunction
-
-sys.path.append('/home/tserekh/exp/models/research/')
-from object_detection.utils import ops as utils_ops
 from object_detection.utils import label_map_util
+from object_detection.utils import ops as utils_ops
 from object_detection.utils import visualization_utils as vis_util
+from tensorflow.python.eager.wrap_function import WrappedFunction
 
 
 def load_model(model_name: str) -> WrappedFunction:

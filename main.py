@@ -1,6 +1,5 @@
 import datetime
 import os
-import sys
 from logging.config import dictConfig
 from pathlib import Path
 
@@ -8,13 +7,11 @@ import numpy as np
 import pytz
 from PIL import Image
 from flask import Flask, request, render_template
+from object_detection.utils import label_map_util
 
 from source import config
 from source.config import logging_config
 from source.ml import load_model, get_class_names_dict, recongnize_image, recongnize_video
-
-sys.path.append('/home/tserekh/exp/models/research/')
-from object_detection.utils import label_map_util
 
 app = Flask(__name__)
 

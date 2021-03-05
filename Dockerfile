@@ -1,25 +1,18 @@
-FROM python:3.6
-
-
-
-RUN apt update
-RUN add-apt-repository ppa:deadsnakes/ppa -y
-RUN apt install python3 -y
-RUN apt install curl -y
-RUN apt-get install python3-pip -y
-RUN apt install libgl1-mesa-glx -y
-
-
-#RUN apt install nginx -y
-#RUN service nginx start
-#
-#RUN openssl req -batch -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/cert.key -out /etc/nginx/cert.crt
-
+FROM continuumio/anaconda3
 COPY . ./app
 WORKDIR /app
+RUN apt-get update
+RUN apt-get install  libgl1-mesa-glx -y
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
-#RUN service nginx restart
+RUN git clone --depth 1 https://github.com/tensorflow/models
+WORKDIR /app/models/research/
+RUN chmod -R 777 ./
+RUN apt install -y protobuf-compiler
+RUN protoc object_detection/protos/*.proto --python_out=.
+RUN pip3 install object_detection
 RUN pip3 install -r /app/requirements.txt
-#RUN python /app/download_pretrained_model.py
+RUN rm /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
+RUN cp /app/models/research/object_detection/protos /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
+WORKDIR /app
 CMD gunicorn --bind 0.0.0.0:$PORT wsgi
