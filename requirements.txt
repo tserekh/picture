@@ -12,3 +12,4 @@ keras
 scipy
 scikit-image
 mrcnn
+pytest

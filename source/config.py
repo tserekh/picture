@@ -26,3 +26,6 @@ MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
 MAX_CONTENT_LENGTH = 1024 * 1024 * 1024
 UPLOAD_FOLDER = '../uploads'
 RESAVE_FOLDER = '../resaved'
+
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg'}
+ALLOWED_VIDEO_EXTENSIONS = {'mp4'}
