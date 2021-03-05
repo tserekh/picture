@@ -16,7 +16,7 @@ RUN pip3 install -r /app/requirements.txt
 RUN cp /app/models/research/object_detection /opt/conda/lib/python3.8/site-packages/object_detection -r
 WORKDIR /opt
 RUN useradd -m myuser
-RUN chmod -R a+rwX /opt
+RUN chmod -R a+rwX /opt/conda/lib/python3.8/
 USER myuser
 CMD gunicorn --bind 0.0.0.0:$PORT wsgi
 #CMD python main.py
