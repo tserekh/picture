@@ -20,7 +20,8 @@ logging_config = {
     }
 }
 
-PATH_TO_LABELS = '/home/tserekh/exp/models/research/object_detection/data/mscoco_label_map.pbtxt'
+# PATH_TO_LABELS = '/home/tserekh/exp/models/research/object_detection/data/mscoco_label_map.pbtxt'
+PATH_TO_LABELS = '/app/models/research/object_detection/data/mscoco_label_map.pbtxt'
 MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
 
 MAX_CONTENT_LENGTH = 1024 * 1024 * 1024

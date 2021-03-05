@@ -10,9 +10,10 @@ WORKDIR /app/models/research/
 RUN chmod -R 777 ./
 RUN apt install -y protobuf-compiler
 RUN protoc object_detection/protos/*.proto --python_out=.
-RUN pip3 install object_detection
+#RUN pip3 install object_detection
 RUN pip3 install -r /app/requirements.txt
-RUN rm /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
-RUN cp /app/models/research/object_detection/protos /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
+#RUN rm /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
+RUN cp /app/models/research/object_detection /opt/conda/lib/python3.8/site-packages/object_detection -r
 WORKDIR /app
 CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+#CMD python main.py
