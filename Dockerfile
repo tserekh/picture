@@ -1,4 +1,5 @@
-FROM continuumio/anaconda3
+FROM continuumio/miniconda3
+
 COPY . ./app
 WORKDIR /app
 RUN apt-get update
@@ -14,9 +15,10 @@ RUN protoc object_detection/protos/*.proto --python_out=.
 RUN pip3 install -r /app/requirements.txt
 #RUN rm /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
 RUN cp /app/models/research/object_detection /opt/conda/lib/python3.8/site-packages/object_detection -r
-WORKDIR /opt
 RUN useradd -m myuser
-RUN chmod -R a+rwX /opt/conda/lib/python3.8/
+#RUN chmod -R a+rwX /opt/conda/lib/python3.8/
 USER myuser
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+WORKDIR /app
+#CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi2
 #CMD python main.py
