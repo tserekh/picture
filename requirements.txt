@@ -12,3 +12,10 @@ keras
 scipy
 scikit-image
 pytest
+pandas
+pathlib
+numpy
+pytz
+Pillow
+flask
+opencv-python
