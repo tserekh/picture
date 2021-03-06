@@ -24,7 +24,5 @@ USER myuser
 WORKDIR /app
 #CMD gunicorn --bind 0.0.0.0:$PORT wsgi
 
-
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "env38", "gunicorn", "--bind", "0.0.0.0:$PORT", "wsgi2"]
-#CMD gunicorn --bind 0.0.0.0:$PORT wsgi2
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi2
 #CMD python main.py
