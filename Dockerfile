@@ -4,6 +4,8 @@ COPY . ./app
 WORKDIR /app
 RUN apt-get update
 RUN apt-get install  libgl1-mesa-glx -y
+RUN conda create --name env38 python=3.8
+SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN git clone --depth 1 https://github.com/tensorflow/models
@@ -20,5 +22,8 @@ RUN useradd -m myuser
 USER myuser
 WORKDIR /app
 #CMD gunicorn --bind 0.0.0.0:$PORT wsgi
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi2
+
+
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "env38", "gunicorn", "--bind", "0.0.0.0:$PORT", "wsgi2"]
+#CMD gunicorn --bind 0.0.0.0:$PORT wsgi2
 #CMD python main.py
