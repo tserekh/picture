@@ -18,6 +18,9 @@ app = Flask(__name__)
 dictConfig(logging_config)
 ROOT_DIR = Path(".")
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
+os.makedirs(config.UPLOAD_FOLDER,  exist_ok=True)
+os.makedirs(config.RESAVE_FOLDER,  exist_ok=True)
+
 model = load_model(config.MODEL_NAME)
 
 def get_extension(filename: str):
