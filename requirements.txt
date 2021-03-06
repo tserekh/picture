@@ -4,11 +4,11 @@ flask
 waitress
 gunicorn
 werkzeug
-# opencv-python
+opencv-python
 pytz
-# tensorflow
-# tf_slim
-# keras
+tensorflow
+tf_slim
+keras
 scipy
 scikit-image
 pytest
