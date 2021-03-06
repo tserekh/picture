@@ -1,11 +1,10 @@
-FROM continuumio/miniconda3
+FROM python:3.8
 
 COPY . ./app
 WORKDIR /app
 RUN apt-get update
 RUN apt-get install  libgl1-mesa-glx -y
-RUN conda create --name env38 python=3.8 -y
-SHELL ["conda", "run", "-n", "env38", "/bin/bash", "-c"]
+
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN git clone --depth 1 https://github.com/tensorflow/models
@@ -13,11 +12,11 @@ WORKDIR /app/models/research/
 RUN chmod -R 777 ./
 RUN apt install -y protobuf-compiler
 RUN protoc object_detection/protos/*.proto --python_out=.
-#RUN pip3 install object_detection
+
 RUN pip3 install -r /app/requirements.txt
-RUN chmod -R 777 /opt/conda/envs/env38/lib/python3.8/site-packages
-#RUN rm /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
-RUN cp /app/models/research/object_detection /opt/conda/envs/env38/lib/python3.8/site-packages/object_detection -r
+#RUN chmod -R 777 /opt/conda/envs/env38/lib/python3.8/site-packages
+
+#RUN cp /app/models/research/object_detection /opt/conda/envs/env38/lib/python3.8/site-packages/object_detection -r
 
 RUN useradd -m myuser
 #RUN chmod -R a+rwX /opt/conda/lib/python3.8/
