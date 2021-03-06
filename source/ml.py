@@ -100,15 +100,24 @@ def recongnize_video(app, model, video_path, class_names_dict, category_index, c
     brightness = []
     timestamps = []
     summary = pd.DataFrame()
-    for i in range(100):
-        ok, image_np = cap.read()
-
-        if ok:
-            brightness.append(image_np.mean())
-            timestamps.append(cap.get(cv2.CAP_PROP_POS_MSEC))
-            summary_part = recongnize_image(app, model, image_np, class_names_dict, category_index,
-                                            class_name, image_path_resave=image_resave_path_pattern.format(i))
-            summary = summary.append(summary_part)
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    n_preds_for_video =  100
+    frames_between_preds = max(1, frame_count // n_preds_for_video)
+    while True:
+        for i in range(frames_between_preds):
+            ok, image_np = cap.read()
+            if i != 0:
+                continue
+            if ok:
+                brightness.append(image_np.mean())
+                timestamps.append(cap.get(cv2.CAP_PROP_POS_MSEC))
+                summary_part = recongnize_image(app, model, image_np, class_names_dict, category_index,
+                                                class_name, image_path_resave=image_resave_path_pattern.format(i))
+                summary_part['time'] = cap.get(cv2.CAP_PROP_POS_MSEC)/1000
+                summary = summary.append(summary_part)
+            if not ok:
+                break
         if not ok:
             break
+
     return summary
