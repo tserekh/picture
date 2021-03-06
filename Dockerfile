@@ -17,7 +17,7 @@ RUN protoc object_detection/protos/*.proto --python_out=.
 RUN pip3 install -r /app/requirements.txt
 RUN chmod -R 777 /opt/conda/envs/env38/lib/python3.8/site-packages
 #RUN rm /opt/conda/lib/python3.8/site-packages/object_detection/protos -r
-RUN cp /app/models/research/object_detection/opt/conda/envs/env38/lib/python3.8/site-packages/object_detection -r
+RUN cp /app/models/research/object_detection /opt/conda/envs/env38/lib/python3.8/site-packages/object_detection -r
 
 RUN useradd -m myuser
 #RUN chmod -R a+rwX /opt/conda/lib/python3.8/
