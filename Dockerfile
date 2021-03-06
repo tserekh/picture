@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install  libgl1-mesa-glx -y
 RUN conda create --name env38 python=3.8
-SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "env38", "/bin/bash", "-c"]
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN git clone --depth 1 https://github.com/tensorflow/models
