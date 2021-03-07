@@ -13,17 +13,17 @@ from object_detection.utils import visualization_utils as vis_util
 from tensorflow.python.eager.wrap_function import WrappedFunction
 
 
-def load_model(model_name: str) -> WrappedFunction:
-    base_url = 'http://download.tensorflow.org/models/object_detection/'
+def load_model(model_name: str) -> WrappedFunctfion:
+    base_url = 'http://download.tensorflow.org/models/object_detection/tf2/20200711/'
     model_file = model_name + '.tar.gz'
     model_dir = tf.keras.utils.get_file(
         fname=model_name,
         origin=base_url + model_file,
-        untar=True)
+        untar=True,
+    )
 
     model_dir = pathlib.Path(model_dir) / "saved_model"
     model = tf.saved_model.load(str(model_dir))
-    model = model.signatures['serving_default']
     return model
 
 
@@ -56,10 +56,9 @@ def get_class_names_dict(path_to_labels: str) -> Dict[int, str]:
 def recongnize_image(app, model, image_np, class_names_dict, category_index,
                      class_name, image_path_resave=None) -> pd.DataFrame:
     output_dict = make_prediction_result(model, image_np)
-
-    app.logger.warning(str(output_dict))
-    app.logger.warning(str(class_names_dict))
-    app.logger.warning(str(class_name))
+    app.logger.info(str(output_dict))
+    app.logger.info(str(class_names_dict))
+    app.logger.info(str(class_name))
     filter_ = (output_dict['detection_classes'] == class_names_dict[class_name]) & (
             output_dict['detection_scores'] > 0.5)
     for key in output_dict.keys():
@@ -106,7 +105,7 @@ def recongnize_video(app, model, video_path, class_names_dict, category_index, c
     j = 0
     while True:
         for i in range(frames_between_preds):
-            j+=1
+            j += 1
             ok, image_np = cap.read()
             if i != 0:
                 continue

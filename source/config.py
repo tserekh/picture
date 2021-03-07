@@ -22,7 +22,8 @@ logging_config = {
 }
 
 PATH_TO_LABELS = '/'.join(object_detection_path.split('/')[:-1])+'/data/mscoco_label_map.pbtxt'
-MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+MODEL_NAME = 'faster_rcnn_resnet50_v1_640x640_coco17_tpu-8'
+
 
 MAX_CONTENT_LENGTH = 1024 * 1024 * 1024
 UPLOAD_FOLDER = '../uploads'
