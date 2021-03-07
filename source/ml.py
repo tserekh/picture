@@ -101,7 +101,7 @@ def recongnize_video(app, model, video_path, class_names_dict, category_index, c
     timestamps = []
     summary = pd.DataFrame()
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    n_preds_for_video =  100
+    n_preds_for_video = 100
     frames_between_preds = max(1, frame_count // n_preds_for_video)
     while True:
         for i in range(frames_between_preds):
