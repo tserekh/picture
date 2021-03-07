@@ -13,7 +13,7 @@ from object_detection.utils import visualization_utils as vis_util
 from tensorflow.python.eager.wrap_function import WrappedFunction
 
 
-def load_model(model_name: str) -> WrappedFunctfion:
+def load_model(model_name: str) -> WrappedFunction:
     base_url = 'http://download.tensorflow.org/models/object_detection/tf2/20200711/'
     model_file = model_name + '.tar.gz'
     model_dir = tf.keras.utils.get_file(
