@@ -22,7 +22,7 @@ logging_config = {
 }
 
 PATH_TO_LABELS = '/'.join(object_detection_path.split('/')[:-1])+'/data/mscoco_label_map.pbtxt'
-MODEL_NAME = 'faster_rcnn_resnet50_v1_640x640_coco17_tpu-8'
+MODEL_NAME = 'fssd_mobilenet_v2_320x320_coco17_tpu-8'
 
 
 MAX_CONTENT_LENGTH = 1024 * 1024 * 1024
